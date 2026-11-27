@@ -1,0 +1,41 @@
+plugins {
+    id "java"
+}
+
+group = "headerrandomizer"
+version = "1.0.0"
+
+repositories { mavenCentral() }
+
+dependencies {
+    compileOnly "net.portswigger.burp.extensions:montoya-api:2026.7"
+    implementation "org.snakeyaml:snakeyaml-engine:3.2"
+    testImplementation "net.portswigger.burp.extensions:montoya-api:2026.7"
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.release = 17
+}
+
+jar {
+    archiveFileName = "header-randomizer.jar"
+    destinationDirectory = file("dist")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { zipTree(it) } }
+    exclude "META-INF/MANIFEST.MF", "META-INF/*.SF", "META-INF/*.RSA", "META-INF/*.DSA", "module-info.class"
+}
+
+test { enabled = false }
+
+def headerChecks = tasks.register("headerChecks", JavaExec) {
+    group = "verification"
+    dependsOn tasks.named("testClasses"), tasks.named("jar")
+    classpath = files(tasks.named("jar").flatMap { it.archiveFile },
+            sourceSets.test.output, configurations.testRuntimeClasspath)
+    mainClass = "headerrandomizer.HeaderRandomizerTest"
+    enableAssertions = true
+    systemProperty "java.awt.headless", "true"
+}
+
+check { dependsOn headerChecks }

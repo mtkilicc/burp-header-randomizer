@@ -1,0 +1,43 @@
+# Preview one example of each generator in Header Randomizer.
+# Use version 1 for this file format. Every example starts disabled.
+version: 1
+# This switch controls whether any rule can rewrite a request.
+enabled: false
+rules:
+  # A list rule picks one complete value. These are fictional client identifiers.
+  - enabled: false
+    header: User-Agent
+    generator: list
+    values:
+      - DemoDesktop/1.0
+      - DemoMobile/1.0
+    tools: [repeater]
+
+  # A template keeps the prefix and expands the token on each matching request.
+  # The 192.0.2.0/24 range is reserved for documentation.
+  - enabled: false
+    header: X-Forwarded-For
+    generator: template
+    value: "192.0.2.{octet}"
+    tools: [repeater]
+
+  # A fixed rule uses exactly the same value each time.
+  - enabled: false
+    header: X-Demo-Mode
+    generator: fixed
+    value: preview
+    tools: [repeater]
+
+  # A digits rule creates a string of this length, including possible leading zeros.
+  - enabled: false
+    header: X-Demo-Request-Id
+    generator: digits
+    value: 8
+    tools: [repeater]
+
+  # IPv4 generates a complete address and needs no value field.
+  - enabled: false
+    header: X-Demo-Client-Ip
+    generator: ipv4
+    # List specific tools or use all for Repeater, Proxy, Intruder, and Scanner.
+    tools: [repeater]

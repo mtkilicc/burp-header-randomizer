@@ -1,0 +1,8 @@
+Header Randomizer includes SnakeYAML Engine 3.2.
+
+Copyright (c) 2018, SnakeYAML
+Copyright (c) 2008 Google Inc. (the bundled Google GData escaping classes)
+
+These components are distributed under the Apache License, Version 2.0.
+A copy appears in LICENSE-snakeyaml-engine.txt in this directory.
+Upstream source is available at https://codeberg.org/snakeyaml/snakeyaml-engine.
